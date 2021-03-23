@@ -1,4 +1,5 @@
 from tkinter import *
+import parser
 
 root = Tk()
 root.title("Calculator")
@@ -34,6 +35,18 @@ def undo():
         clear_display()
         display.insert(0 ,'Error!')
 
+# Metodo que evalua operaciones matematicas
+def calculate():
+    display_state = display.get()
+    try:
+        math_expression = parser.expr(display_state).compile()
+        result = eval(math_expression)
+        clear_display()
+        display.insert(0 , result)
+    except:
+        clear_display()
+        display.insert(0, 'Error!')
+
 
 # Numeric Buttons
 Button(root, text="1", command=lambda:get_numbers(1)).grid(row=2, column=0,sticky=W+E)
@@ -63,7 +76,7 @@ Button(root, text="exp", command=lambda: get_operation("**")).grid(row=3, column
 Button(root, text="^2", command=lambda: get_operation("**2")).grid(row=3, column=5, sticky=W+E)
 Button(root, text="(", command=lambda: get_operation("(")).grid(row=4, column=4, sticky=W+E)
 Button(root, text=")", command=lambda: get_operation(")")).grid(row=4, column=5, sticky=W+E)
-Button(root, text="=").grid(row=5, column=4, sticky=W+E,  columnspan = 2)
+Button(root, text="=", command=lambda : calculate()).grid(row=5, column=4, sticky=W+E,  columnspan = 2)
 
 
 root.mainloop()
